@@ -1,11 +1,11 @@
 package dto
 
 type EncodeURLReq struct {
-	URL string `json:"url" binding:"required,url"`
+	URL string
 }
 
 type DecodeURLReq struct {
-	URL string `json:"url" binding:"required,url"`
+	URL string
 }
 
 type EncodeURLResp struct {

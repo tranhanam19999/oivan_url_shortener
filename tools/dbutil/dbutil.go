@@ -20,7 +20,7 @@ func New(cfg *config.DBConfig) (*gorm.DB, error) {
 
 func openConnection(cfg *config.DBConfig) string {
 	return fmt.Sprintf(
-		"host=%s port=%d user=%s password=%s dbname=%s sslmode=%s",
+		"host=%s port=%s user=%s password=%s dbname=%s sslmode=%s",
 		cfg.Host,
 		cfg.Port,
 		cfg.User,

@@ -8,8 +8,8 @@ import (
 )
 
 type Service interface {
-	EncodeUrl(ctx context.Context, url string) (string, error)
-	DecodeUrl(ctx context.Context, url string) (string, error)
+	EncodeUrl(ctx context.Context, input dto.EncodeURLReq) (dto.EncodeURLResp, error)
+	DecodeUrl(ctx context.Context, input dto.DecodeURLReq) (dto.DecodeURLResp, error)
 }
 
 type HTTP struct {
@@ -44,15 +44,36 @@ func NewHTTP(svc Service, eg *echo.Group) {
 }
 
 func (h *HTTP) encodeUrlHandler(c echo.Context) error {
-	r := dto.EncodeURLReq{}
+	r := EncodeURLInput{}
 	if err := c.Bind(&r); err != nil {
 		return err
 	}
 
-	h.svc.EncodeUrl(c.Request().Context(), r.URL)
-	return nil
+	resp, err := h.svc.EncodeUrl(c.Request().Context(), dto.EncodeURLReq{
+		URL: r.URL,
+	})
+
+	// TODO: handle error properly
+	if err != nil {
+		return err
+	}
+
+	return c.JSON(200, resp)
 }
 
 func (h *HTTP) decodeUrlHandler(c echo.Context) error {
-	return nil
+	r := DecodeURLInput{}
+	if err := c.Bind(&r); err != nil {
+		return err
+	}
+
+	resp, err := h.svc.DecodeUrl(c.Request().Context(), dto.DecodeURLReq{
+		URL: r.URL,
+	})
+
+	if err != nil {
+		return err
+	}
+
+	return c.JSON(200, resp)
 }

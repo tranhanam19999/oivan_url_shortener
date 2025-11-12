@@ -1,12 +1,16 @@
-package usrepository
+package repository
 
 import (
+	"url-shortener/internal/model"
+
 	"gorm.io/gorm"
 )
 
 type URLShortenerRepository interface {
-	Save(originalURL, shortURL string) error
-	FindOriginalURL(url string) (string, error)
+	// Create will do insert a new US record
+	Create(input CreateInput) error
+	// FindOne will find a URLShortener by original URL
+	FindOne(input FindOneInput) (*model.URLShortener, error)
 }
 
 type repo struct {
@@ -19,12 +23,22 @@ func New(db *gorm.DB) URLShortenerRepository {
 	}
 }
 
-func (r *repo) Save(originalURL, shortURL string) error {
-	// Implementation to save the URL mapping in the database
+func (r *repo) Create(input CreateInput) error {
+	if err := r.db.Create(&model.URLShortener{
+		OriginalURL: input.OriginalURL,
+		ShortURL:    input.ShortenedURL,
+	}).Error; err != nil {
+		return err
+	}
+
 	return nil
 }
 
-func (r *repo) FindOriginalURL(shortURL string) (string, error) {
-	// Implementation to find the original URL from the shortened URL in the database
-	return "", nil
+func (r *repo) FindOne(input FindOneInput) (*model.URLShortener, error) {
+	var us *model.URLShortener
+	if err := r.db.Where("original_url = ?", input.URL).First(&us).Error; err != nil {
+		return nil, err
+	}
+
+	return us, nil
 }
