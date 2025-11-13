@@ -1,0 +1,28 @@
+version: "3"
+
+tasks:
+  build:
+    desc: Build Go into binary for deployment
+    cmds:
+      - go build -o main .
+  
+  start:
+    desc: Start database container and run Go app locally
+    cmds:
+      - docker compose up -d
+      - source .env && go run main.go
+  
+  provision:
+    desc: Build docker images
+    cmds:
+      - docker compose build
+
+  docker:down:
+    desc: Stop containers
+    cmds:
+      - docker compose down
+  
+  docker:logs:
+    desc: Show logs
+    cmds:
+      - docker compose logs -f

@@ -1,8 +1,15 @@
 package config
 
 type Config struct {
-	Port string   `env:"PORT" envDefault:"8080"`
-	DB   DBConfig `envPrefix:"DB_"`
+	Stage string    `env:"STAGE" envDefault:"local"`
+	App   AppConfig `envPrefix:"APP_"`
+	DB    DBConfig  `envPrefix:"DB_"`
+}
+
+type AppConfig struct {
+	Host    string `env:"HOST" envDefault:"localhost"`
+	Port    string `env:"PORT" envDefault:"8080"`
+	BaseURL string `env:"BASE_URL" envDefault:"http://localhost:8080"`
 }
 
 type DBConfig struct {

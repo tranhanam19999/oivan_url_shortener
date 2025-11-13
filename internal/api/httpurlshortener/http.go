@@ -8,8 +8,8 @@ import (
 )
 
 type Service interface {
-	EncodeUrl(ctx context.Context, input dto.EncodeURLReq) (dto.EncodeURLResp, error)
-	DecodeUrl(ctx context.Context, input dto.DecodeURLReq) (dto.DecodeURLResp, error)
+	EncodeUrl(ctx context.Context, input dto.EncodeURLReq) (*dto.EncodeURLResp, error)
+	DecodeUrl(ctx context.Context, input dto.DecodeURLReq) (*dto.DecodeURLResp, error)
 }
 
 type HTTP struct {

@@ -1,6 +1,10 @@
 package model
 
-import "time"
+import (
+	"time"
+
+	"gorm.io/gorm"
+)
 
 type Base struct {
 	ID        uint `gorm:"primaryKey;autoIncrement"`
@@ -8,7 +12,7 @@ type Base struct {
 	UpdatedAt *time.Time
 }
 
-func (b *Base) BeforeCreate() {
+func (b *Base) BeforeCreate(tx *gorm.DB) error {
 	now := time.Now()
 
 	if b.CreatedAt == nil {
@@ -18,10 +22,14 @@ func (b *Base) BeforeCreate() {
 	if b.UpdatedAt == nil {
 		b.UpdatedAt = &now
 	}
+
+	return nil
 }
 
-func (b *Base) BeforeUpdate() {
+func (b *Base) BeforeUpdate(tx *gorm.DB) error {
 	// Set UpdatedAt timestamp
 	now := time.Now()
 	b.UpdatedAt = &now
+
+	return nil
 }

@@ -2,6 +2,7 @@ package main
 
 import (
 	"url-shortener/internal/api/httpurlshortener"
+	"url-shortener/internal/model"
 	"url-shortener/internal/repository"
 	"url-shortener/internal/service/urlshortener"
 
@@ -19,13 +20,15 @@ func main() {
 		panic(err)
 	}
 
+	db.AutoMigrate(&model.URLShortener{})
 	repos := repository.NewRepository(db)
 	e := echo.New()
 
 	g := e.Group("/url-shortener")
 	// Define routes
 	urlshortenerSvc := urlshortener.NewService(
-		&repos.UrlShortener,
+		repos.UrlShortener,
+		cfg.App.BaseURL,
 	)
 
 	httpurlshortener.NewHTTP(urlshortenerSvc, g)

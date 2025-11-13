@@ -1,6 +1,7 @@
 package config
 
 import (
+	"fmt"
 	"log"
 
 	"github.com/caarlos0/env/v11"
@@ -15,5 +16,14 @@ func Load() *Config {
 		log.Fatalf("failed to parse env: %v", err)
 	}
 
+	cfg.App.BaseURL = buildBaseURL(cfg)
 	return &cfg
+}
+
+func buildBaseURL(cfg Config) string {
+	if cfg.Stage == "local" {
+		return fmt.Sprintf("http://%s:%s", cfg.App.Host, cfg.App.Port)
+	}
+
+	return cfg.App.Host
 }

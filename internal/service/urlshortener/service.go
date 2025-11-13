@@ -9,19 +9,21 @@ import (
 type Service interface {
 	// Encode will encode an url into a shorterned version
 	// With a link contains the server's domain
-	EncodeUrl(ctx context.Context, input dto.EncodeURLReq) (dto.EncodeURLResp, error)
+	EncodeUrl(ctx context.Context, input dto.EncodeURLReq) (*dto.EncodeURLResp, error)
 
 	// While decode will decode the shortened url made by the encoded one
 	// If there is no such url, it will return an error
-	DecodeUrl(ctx context.Context, input dto.DecodeURLReq) (dto.DecodeURLResp, error)
+	DecodeUrl(ctx context.Context, input dto.DecodeURLReq) (*dto.DecodeURLResp, error)
 }
 
 type service struct {
-	repo *repository.URLShortenerRepository
+	repo    repository.URLShortenerRepository
+	baseURL string
 }
 
-func NewService(repo *repository.URLShortenerRepository) Service {
+func NewService(repo repository.URLShortenerRepository, baseURL string) Service {
 	return &service{
-		repo: repo,
+		repo:    repo,
+		baseURL: baseURL,
 	}
 }
