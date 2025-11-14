@@ -34,5 +34,5 @@ func main() {
 	httpurlshortener.NewHTTP(urlshortenerSvc, g)
 
 	// Start server on port 8080
-	e.Logger.Fatal(e.Start(":8080"))
+	e.Logger.Fatal(e.Start(cfg.App.Port))
 }
