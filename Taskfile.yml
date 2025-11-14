@@ -26,3 +26,6 @@ tasks:
     desc: Show logs
     cmds:
       - docker compose logs -f
+  # this command is used for generating test (MOCK) files for supporting writing test only
+  gen-mocks:
+    mockery

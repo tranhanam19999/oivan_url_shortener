@@ -3,7 +3,6 @@ package urlshortener
 import (
 	"context"
 	"errors"
-	"fmt"
 	"net/url"
 	"url-shortener/internal/dto"
 	repository "url-shortener/internal/repository/urlshortener"
@@ -17,8 +16,10 @@ func (s *service) EncodeUrl(ctx context.Context, input dto.EncodeURLReq) (*dto.E
 		OriginalURL: input.URL,
 	})
 
-	if err != gorm.ErrRecordNotFound {
-		return nil, err
+	if err != nil {
+		if err != gorm.ErrRecordNotFound {
+			return nil, err
+		}
 	}
 
 	if rec != nil {
@@ -34,13 +35,10 @@ func (s *service) EncodeUrl(ctx context.Context, input dto.EncodeURLReq) (*dto.E
 
 	encodedID := utils.EncodeBase62(id)
 
-	fmt.Println("ENCODED ID:", encodedID)
 	shortURL, err := url.JoinPath(s.baseURL, encodedID)
 	if err != nil {
 		return nil, err
 	}
-
-	fmt.Println("test ", utils.EncodeBase62(2000000))
 
 	err = s.repo.UpdateMapping(repository.UpdateMappingInput{
 		ID:           id,

@@ -27,3 +27,15 @@ func buildBaseURL(cfg Config) string {
 
 	return cfg.App.Host
 }
+
+// This is only for intergration testing
+func LoadTest() *Config {
+	_ = godotenv.Load("../../.env.test") // load .env into environment
+	var cfg Config
+	if err := env.Parse(&cfg); err != nil {
+		log.Fatalf("failed to parse env: %v", err)
+	}
+
+	cfg.App.BaseURL = buildBaseURL(cfg)
+	return &cfg
+}

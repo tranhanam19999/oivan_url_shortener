@@ -1,0 +1,27 @@
+all: false
+dir: '{{.InterfaceDir}}/mocks'   # <--- this is correct
+filename: 'mocks.go'
+force-file-write: true
+formatter: goimports
+generate: true
+include-auto-generated: false
+log-level: info
+pkgname: 'mocks'   # <--- same package as interface
+recursive: false
+require-template-schema-exists: true
+structname: 'Mock{{.InterfaceName}}'
+template: testify
+template-schema: '{{.Template}}.schema.json'
+
+packages:
+  url-shortener/internal/api/httpurlshortener:
+    config:
+      all: true
+
+  url-shortener/internal/service/urlshortener:
+    config:
+      all: true
+  
+  url-shortener/internal/repository/urlshortener:
+    config:
+      all: true
