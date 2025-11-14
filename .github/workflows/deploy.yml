@@ -34,6 +34,7 @@ jobs:
             fi
 
             cd repo
+            git checkout feature/deployment
             git reset --hard
             git pull
 
