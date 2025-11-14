@@ -30,7 +30,7 @@ jobs:
             if [ ! -d .git ]; then
               git clone ${{ secrets.GIT_REPO_URL }} repo
             fi
-            
+
             cd repo
             git reset --hard
             git pull
@@ -41,6 +41,8 @@ jobs:
             # Start / restart services
             docker-compose pull
             docker-compose up -d
+            cd ..
+            ./app
             sudo systemctl restart url-shortener
           EOF
 
