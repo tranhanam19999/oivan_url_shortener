@@ -25,7 +25,7 @@ jobs:
       - name: SSH to EC2
         run: |
           echo "${{ secrets.EC2_SSH_KEY }}" > private_key && chmod 600 private_key
-          ssh -o StrictHostKeyChecking=no -i private_key ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }}:/var/www/url-shortener/app'
+          ssh -o StrictHostKeyChecking=no -i private_key ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }}:/var/www/url-shortener/app
       # - name: Add SSH Key
       #   uses: webfactory/ssh-agent@v0.9.0
       #   with:
