@@ -1,6 +1,7 @@
 package utils
 
 import (
+	"net/url"
 	"strings"
 )
 
@@ -26,4 +27,22 @@ func DecodeBase62(str string) int64 {
 		result = result*62 + int64(strings.IndexRune(base62Chars, c))
 	}
 	return result
+}
+
+func IsValidUrl(u string) bool {
+	parsed, err := url.ParseRequestURI(u)
+	if err != nil {
+		return false
+	}
+
+	// Only allow http or https
+	if parsed.Scheme != "http" && parsed.Scheme != "https" && parsed.Scheme != "ftp" {
+		return false
+	}
+
+	if parsed.Host == "" {
+		return false
+	}
+
+	return true
 }

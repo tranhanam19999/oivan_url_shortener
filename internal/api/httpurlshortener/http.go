@@ -2,7 +2,9 @@ package httpurlshortener
 
 import (
 	"context"
+	"net/http"
 	"url-shortener/internal/dto"
+	"url-shortener/tools/utils"
 
 	"github.com/labstack/echo/v4"
 )
@@ -46,16 +48,20 @@ func NewHTTP(svc Service, eg *echo.Group) {
 func (h *HTTP) encodeUrlHandler(c echo.Context) error {
 	r := EncodeURLInput{}
 	if err := c.Bind(&r); err != nil {
-		return err
+		return echo.NewHTTPError(http.StatusBadRequest, "Invalid input")
+	}
+
+	if valid := utils.IsValidUrl(r.URL); !valid {
+		return echo.NewHTTPError(http.StatusBadRequest, "Invalid url format")
 	}
 
 	resp, err := h.svc.EncodeUrl(c.Request().Context(), dto.EncodeURLReq{
 		URL: r.URL,
 	})
 
-	// TODO: handle error properly
 	if err != nil {
-		return err
+		httpErr := mapError(err)
+		return c.JSON(httpErr.Code, httpErr.Message)
 	}
 
 	return c.JSON(200, resp)
@@ -64,7 +70,11 @@ func (h *HTTP) encodeUrlHandler(c echo.Context) error {
 func (h *HTTP) decodeUrlHandler(c echo.Context) error {
 	r := DecodeURLInput{}
 	if err := c.Bind(&r); err != nil {
-		return err
+		return echo.NewHTTPError(http.StatusBadRequest, "Invalid input")
+	}
+
+	if valid := utils.IsValidUrl(r.URL); !valid {
+		return echo.NewHTTPError(http.StatusBadRequest, "Invalid url format")
 	}
 
 	resp, err := h.svc.DecodeUrl(c.Request().Context(), dto.DecodeURLReq{
@@ -72,7 +82,8 @@ func (h *HTTP) decodeUrlHandler(c echo.Context) error {
 	})
 
 	if err != nil {
-		return err
+		httpErr := mapError(err)
+		return c.JSON(httpErr.Code, httpErr.Message)
 	}
 
 	return c.JSON(200, resp)
