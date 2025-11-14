@@ -28,14 +28,15 @@ jobs:
           ssh -o StrictHostKeyChecking=no -i private_key ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} <<EOF
             cd /var/www/url-shortener
             if [ ! -d .git ]; then
-              git clone ${{ secrets.GIT_REPO_URL }} .
-            else
-              git reset --hard
-              git pull
+              git clone ${{ secrets.GIT_REPO_URL }} repo
             fi
+            
+            cd repo
+            git reset --hard
+            git pull
 
             # If your main.go is in the root folder of repo
-            go build -o app .
+            go build -o ../app
 
             # Start / restart services
             docker-compose pull
