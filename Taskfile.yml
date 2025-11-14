@@ -4,7 +4,7 @@ tasks:
   build:
     desc: Build Go into binary for deployment
     cmds:
-      - go build -o main .
+      - go build -o app .
   
   start:
     desc: Start database container and run Go app locally
