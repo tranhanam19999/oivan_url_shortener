@@ -26,6 +26,11 @@ tasks:
     desc: Show logs
     cmds:
       - docker compose logs -f
+  
+  # this command is used for generating swag (api documentation) for FE devs to view
+  specs:
+    swag init
+
   # this command is used for generating test (MOCK) files for supporting writing test only
   gen-mocks:
     mockery

@@ -23,28 +23,22 @@ func NewHTTP(svc Service, eg *echo.Group) {
 		svc: svc,
 	}
 
-	// swagger:route POST /url-shortener/encode url-shortener encodeUrl
-	//
-	// Encode a given URL to a shortened version.
-	//
-	// Responses:
-	//   200: encodeResponse
-	//   400: badRequestResponse
-	//   500: internalServerErrorResponse
 	eg.POST("/encode", h.encodeUrlHandler)
 
-	// swagger:route POST /url-shortener/decode url-shortener decodeUrl
-	//
-	// Decode a shortened URL to its original form.
-	//
-	// Responses:
-	//   200: decodeResponse
-	//   400: badRequestResponse
-	//   404: notFoundResponse
-	//   500: internalServerErrorResponse
 	eg.POST("/decode", h.decodeUrlHandler)
 }
 
+// EncodeUrlHandler godoc
+// @Summary Encode URL
+// @Description Encode a given URL to a shortened version.
+// @Tags url-shortener
+// @Accept json
+// @Produce json
+// @Param input body httpurlshortener.EncodeURLInput true "URL Input to be encoded"
+// @Success 200 {object} dto.EncodeURLResp
+// @Failure 400 {object} dto.EchoHttpErrorResp
+// @Failure 500 {object} dto.EchoHttpErrorResp
+// @Router /url-shortener/encode [post]
 func (h *HTTP) encodeUrlHandler(c echo.Context) error {
 	r := EncodeURLInput{}
 	if err := c.Bind(&r); err != nil {

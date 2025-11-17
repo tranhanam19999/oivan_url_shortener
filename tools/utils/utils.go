@@ -1,6 +1,8 @@
 package utils
 
 import (
+	"fmt"
+	"net/http"
 	"net/url"
 	"strings"
 )
@@ -36,7 +38,7 @@ func IsValidUrl(u string) bool {
 	}
 
 	// Only allow http or https
-	if parsed.Scheme != "http" && parsed.Scheme != "https" && parsed.Scheme != "ftp" {
+	if parsed.Scheme != "http" && parsed.Scheme != "https" {
 		return false
 	}
 
@@ -45,4 +47,24 @@ func IsValidUrl(u string) bool {
 	}
 
 	return true
+}
+
+func BuildUrlFromRequest(r *http.Request) string {
+	fullURL := r.URL
+	scheme := "http"
+	if r.TLS != nil {
+		scheme = "https"
+	}
+
+	reqUrl := scheme + "://" + r.Host + fullURL.RequestURI()
+
+	return reqUrl
+}
+
+func BuildShortenUrlFromConfig(in BuildUrlFromConfigInput) string {
+	if in.Stage == "local" {
+		return fmt.Sprintf("%s:%s/r", in.Host, in.Port)
+	}
+
+	return in.Host
 }

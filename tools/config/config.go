@@ -1,8 +1,8 @@
 package config
 
 import (
-	"fmt"
 	"log"
+	"url-shortener/tools/utils"
 
 	"github.com/caarlos0/env/v11"
 	"github.com/joho/godotenv"
@@ -16,16 +16,13 @@ func Load() *Config {
 		log.Fatalf("failed to parse env: %v", err)
 	}
 
-	cfg.App.BaseURL = buildBaseURL(cfg)
+	cfg.App.SBaseURL = utils.BuildShortenUrlFromConfig(utils.BuildUrlFromConfigInput{
+		Host:  cfg.App.Host,
+		Port:  cfg.App.Port,
+		Stage: cfg.Stage,
+	})
+
 	return &cfg
-}
-
-func buildBaseURL(cfg Config) string {
-	if cfg.Stage == "local" {
-		return fmt.Sprintf("http://%s:%s", cfg.App.Host, cfg.App.Port)
-	}
-
-	return cfg.App.Host
 }
 
 // This is only for intergration testing
@@ -36,6 +33,11 @@ func LoadTest() *Config {
 		log.Fatalf("failed to parse env: %v", err)
 	}
 
-	cfg.App.BaseURL = buildBaseURL(cfg)
+	cfg.App.SBaseURL = utils.BuildShortenUrlFromConfig(utils.BuildUrlFromConfigInput{
+		Host:  cfg.App.Host,
+		Port:  cfg.App.Port,
+		Stage: cfg.Stage,
+	})
+
 	return &cfg
 }

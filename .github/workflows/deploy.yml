@@ -2,7 +2,7 @@ name: Deploy to EC2
 
 on:
   push:
-    branches: [ "main", "feature/deployment" ]
+    branches: [ "main" ]
 
 jobs:
   deploy:
@@ -36,7 +36,7 @@ jobs:
             fi
 
             cd repo
-            git checkout feature/deployment
+            git checkout main
             git reset --hard
             git pull
 

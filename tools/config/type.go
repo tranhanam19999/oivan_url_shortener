@@ -7,9 +7,10 @@ type Config struct {
 }
 
 type AppConfig struct {
-	Host    string `env:"HOST" envDefault:"localhost"`
-	Port    string `env:"PORT" envDefault:"8080"`
-	BaseURL string `env:"BASE_URL" envDefault:"http://localhost:8080"`
+	Host     string `env:"HOST" envDefault:"localhost"`
+	Port     string `env:"PORT" envDefault:"8080"`
+	BaseURL  string `env:"-" envDefault:"http://localhost:8080"`
+	SBaseURL string `env:"-" envDefault:"http://localhost:8080/r"`
 }
 
 type DBConfig struct {

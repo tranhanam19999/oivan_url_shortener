@@ -18,28 +18,28 @@ import (
 
 func TestService_EncodeUrl_ReturnExisting(t *testing.T) {
 	mockRepo := repoMocks.NewMockURLShortenerRepository(t)
-	svc := urlshortener.NewService(mockRepo, "http://base")
+	svc := urlshortener.NewService(mockRepo, "http://base/r")
 
 	mockRepo.
 		On("FindOne", repository.FindOneInput{
 			OriginalURL: "https://example.com",
 		}).
 		Return(&model.URLShortener{
-			ShortURL: "http://base/cb",
+			ShortURL: "http://base/r/cb",
 		}, nil)
 
 	resp, err := svc.EncodeUrl(context.Background(), dto.EncodeURLReq{
 		URL: "https://example.com",
 	})
 	require.NoError(t, err)
-	require.Equal(t, "http://base/cb", resp.URL)
+	require.Equal(t, "http://base/r/cb", resp.URL)
 
 	mockRepo.AssertExpectations(t)
 }
 
 func TestService_EncodeUrl_CreateNew(t *testing.T) {
 	mockRepo := new(repoMocks.MockURLShortenerRepository)
-	svc := urlshortener.NewService(mockRepo, "http://base")
+	svc := urlshortener.NewService(mockRepo, "http://base/r")
 
 	mockRepo.
 		On("FindOne", repository.FindOneInput{
@@ -55,7 +55,7 @@ func TestService_EncodeUrl_CreateNew(t *testing.T) {
 		On("UpdateMapping", repository.UpdateMappingInput{
 			ID:           125,
 			OriginalURL:  "https://example.com",
-			ShortenedURL: "http://base/21",
+			ShortenedURL: "http://base/r/21",
 		}).
 		Return(nil)
 
@@ -63,25 +63,25 @@ func TestService_EncodeUrl_CreateNew(t *testing.T) {
 		URL: "https://example.com",
 	})
 	require.NoError(t, err)
-	require.Equal(t, "http://base/21", resp.URL)
+	require.Equal(t, "http://base/r/21", resp.URL)
 
 	mockRepo.AssertExpectations(t)
 }
 
 func TestService_DecodeUrl_Success(t *testing.T) {
 	mockRepo := new(repoMocks.MockURLShortenerRepository)
-	svc := urlshortener.NewService(mockRepo, "http://base")
+	svc := urlshortener.NewService(mockRepo, "http://base/r")
 
 	mockRepo.
 		On("FindOne", repository.FindOneInput{
-			ShortenedURL: "http://base/cb",
+			ShortenedURL: "http://base/r/cb",
 		}).
 		Return(&model.URLShortener{
 			OriginalURL: "https://example.com",
 		}, nil)
 
 	resp, err := svc.DecodeUrl(context.Background(), dto.DecodeURLReq{
-		URL: "http://base/cb",
+		URL: "http://base/r/cb",
 	})
 	require.NoError(t, err)
 	require.Equal(t, "https://example.com", resp.URL)
@@ -91,16 +91,16 @@ func TestService_DecodeUrl_Success(t *testing.T) {
 
 func TestService_DecodeUrl_NotFound(t *testing.T) {
 	mockRepo := new(repoMocks.MockURLShortenerRepository)
-	svc := urlshortener.NewService(mockRepo, "http://base")
+	svc := urlshortener.NewService(mockRepo, "http://base/r")
 
 	mockRepo.
 		On("FindOne", repository.FindOneInput{
-			ShortenedURL: "http://base/missing",
+			ShortenedURL: "http://base/r/missing",
 		}).
 		Return(nil, gorm.ErrRecordNotFound)
 
 	resp, err := svc.DecodeUrl(context.Background(), dto.DecodeURLReq{
-		URL: "http://base/missing",
+		URL: "http://base/r/missing",
 	})
 	require.Nil(t, resp)
 	require.True(t, errors.Is(err, gorm.ErrRecordNotFound))

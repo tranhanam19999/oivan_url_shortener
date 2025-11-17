@@ -35,7 +35,7 @@ func (s *service) EncodeUrl(ctx context.Context, input dto.EncodeURLReq) (*dto.E
 
 	encodedID := utils.EncodeBase62(id)
 
-	shortURL, err := url.JoinPath(s.baseURL, encodedID)
+	shortURL, err := url.JoinPath(s.baseShortenURL, encodedID)
 	if err != nil {
 		return nil, err
 	}

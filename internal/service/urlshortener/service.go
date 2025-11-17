@@ -17,13 +17,13 @@ type Service interface {
 }
 
 type service struct {
-	repo    repository.URLShortenerRepository
-	baseURL string
+	repo           repository.URLShortenerRepository
+	baseShortenURL string
 }
 
-func NewService(repo repository.URLShortenerRepository, baseURL string) Service {
+func NewService(repo repository.URLShortenerRepository, baseShortenURL string) Service {
 	return &service{
-		repo:    repo,
-		baseURL: baseURL,
+		repo:           repo,
+		baseShortenURL: baseShortenURL,
 	}
 }

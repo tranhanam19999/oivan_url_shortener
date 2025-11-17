@@ -2,17 +2,29 @@ package main
 
 import (
 	"fmt"
+	"url-shortener/docs"
+	"url-shortener/internal/api/httpredirect"
 	"url-shortener/internal/api/httpurlshortener"
 	"url-shortener/internal/model"
 	"url-shortener/internal/repository"
+	"url-shortener/internal/service/redirect"
 	"url-shortener/internal/service/urlshortener"
 
 	"url-shortener/tools/config"
 	"url-shortener/tools/dbutil"
 
 	"github.com/labstack/echo/v4"
+
+	_ "url-shortener/docs"
+
+	"github.com/labstack/echo/v4/middleware"
 )
 
+// @title URL Shortener API
+// @version 1.0
+// @description API for encoding and decoding short URLs.
+// @host localhost:8081
+// @BasePath /
 func main() {
 	// Initialize Echo instance
 	cfg := config.Load()
@@ -21,18 +33,33 @@ func main() {
 		panic(err)
 	}
 
+	docs.SwaggerInfo.Host = cfg.App.BaseURL // OR read from env directly
+	docs.SwaggerInfo.Schemes = []string{"http", "https"}
+
+	docs.SwaggerInfo.Title = "Swagger for APIs"
+	docs.SwaggerInfo.Description = "Swagger API Documentation for the url shortener."
+	docs.SwaggerInfo.Version = "1.0"
+	docs.SwaggerInfo.Schemes = []string{"http", "https"}
+
 	db.AutoMigrate(&model.URLShortener{})
 	repos := repository.NewRepository(db)
 	e := echo.New()
 
+	e.Use(middleware.Logger()) // echo built-in logger
+	e.Use(middleware.Recover())
+
+	rg := e.Group("/r")
 	g := e.Group("/url-shortener")
+
 	// Define routes
 	urlshortenerSvc := urlshortener.NewService(
 		repos.UrlShortener,
-		cfg.App.BaseURL,
+		cfg.App.SBaseURL,
 	)
+	redirectSvc := redirect.NewService()
 
 	httpurlshortener.NewHTTP(urlshortenerSvc, g)
+	httpredirect.NewHTTP(redirectSvc, urlshortenerSvc, rg)
 
 	// Start server on port 8080
 	e.Logger.Fatal(e.Start(fmt.Sprintf(":%s", cfg.App.Port)))
