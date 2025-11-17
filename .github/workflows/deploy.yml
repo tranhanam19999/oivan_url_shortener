@@ -24,12 +24,14 @@ jobs:
 
       - name: SSH to EC2
         run: |
-          echo "${{ secrets.EC2_SSH_KEY }}" > private_key && chmod 600 private_key && chmod 400 private_key
+          echo "${{ secrets.EC2_SSH_KEY }}" > private_key
+          chmod 600 private_key
+
           ssh -o StrictHostKeyChecking=no -i private_key ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} <<EOF
             cd /var/www/url-shortener
-            sudo systemctl stop url-shortener || true
 
-            if [ ! -d .git ]; then
+            # Clone repo if not exists
+            if [ ! -d repo/.git ]; then
               git clone ${{ secrets.GIT_REPO_URL }} repo
             fi
 
@@ -38,14 +40,11 @@ jobs:
             git reset --hard
             git pull
 
-            # If your main.go is in the root folder of repo
+            # Build new binary to parent directory
             go build -o ../app
 
-            # Start / restart services
-            docker-compose pull
-            docker-compose up -d
-
-            sudo systemctl daemon-reload
-            sudo systemctl start url-shortener
+            # Restart the service
+            sudo systemctl restart url-shortener
           EOF
+
 
