@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"url-shortener/internal/api/httpurlshortener"
 	"url-shortener/internal/model"
 	"url-shortener/internal/repository"
@@ -34,5 +35,5 @@ func main() {
 	httpurlshortener.NewHTTP(urlshortenerSvc, g)
 
 	// Start server on port 8080
-	e.Logger.Fatal(e.Start(":8080"))
+	e.Logger.Fatal(e.Start(fmt.Sprintf(":%s", cfg.App.Port)))
 }
