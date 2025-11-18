@@ -19,17 +19,20 @@ func (s *service) EncodeUrl(ctx context.Context, input dto.EncodeURLReq) (*dto.E
 
 	fmt.Println("err encoding ", err)
 	fmt.Println("really?? ", errors.Is(err, gorm.ErrRecordNotFound))
+	fmt.Println("condition ", err != nil && !errors.Is(err, gorm.ErrRecordNotFound))
 	if err != nil && !errors.Is(err, gorm.ErrRecordNotFound) {
 		fmt.Println("huh?")
 		return nil, err
 	}
 
+	fmt.Println("Rec ", rec)
 	if rec != nil {
 		return &dto.EncodeURLResp{
 			URL: rec.ShortURL,
 		}, nil
 	}
 
+	fmt.Println("continues")
 	id, err := s.repo.GetNextID(ctx)
 	if err != nil {
 		return nil, err
