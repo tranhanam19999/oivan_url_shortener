@@ -4,7 +4,6 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"net/url"
 	"url-shortener/internal/dto"
 	repository "url-shortener/internal/repository/urlshortener"
 	"url-shortener/tools/utils"
@@ -46,11 +45,9 @@ func (s *service) EncodeUrl(ctx context.Context, input dto.EncodeURLReq) (*dto.E
 	fmt.Println("encodedID ", encodedID)
 	fmt.Println("baseShortenURL ", s.baseShortenURL)
 
-	shortURL, err := url.JoinPath(s.baseShortenURL, encodedID)
-	if err != nil {
-		fmt.Println("here? ", err)
-		return nil, err
-	}
+	// url.JoinPath won't work on ips
+	// shortURL, err := url.JoinPath(s.baseShortenURL, encodedID)
+	shortURL := fmt.Sprintf("%s/%s", s.baseShortenURL, encodedID)
 
 	err = s.repo.UpdateMapping(repository.UpdateMappingInput{
 		ID:           id,
