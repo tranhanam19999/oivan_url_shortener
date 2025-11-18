@@ -9,24 +9,24 @@ tasks:
   start:
     desc: Start database container and run Go app locally
     cmds:
-      - docker compose up -d
+      - docker-compose up -d
       - source .env && go run main.go
   
   provision:
     desc: Build docker images
     cmds:
-      - docker compose build
+      - docker-compose build
       - swag init
 
   docker:down:
     desc: Stop containers
     cmds:
-      - docker compose down
+      - docker-compose down
   
   docker:logs:
     desc: Show logs
     cmds:
-      - docker compose logs -f
+      - docker-compose logs -f
   
   # this command is used for generating swag (api documentation) for FE devs to view
   specs:

@@ -43,6 +43,8 @@ jobs:
             # Build new binary to parent directory
             go build -o ../app
 
+            docker-compose up
+
             # Restart the service
             sudo systemctl restart url-shortener
           EOF
