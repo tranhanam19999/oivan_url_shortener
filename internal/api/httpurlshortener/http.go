@@ -61,6 +61,17 @@ func (h *HTTP) encodeUrlHandler(c echo.Context) error {
 	return c.JSON(200, resp)
 }
 
+// DecodeUrlHandler godoc
+// @Summary Decode URL
+// @Description Decode a given URL to a shortened version.
+// @Tags url-shortener
+// @Accept json
+// @Produce json
+// @Param input body httpurlshortener.DecodeURLInput true "URL Input to be decoded"
+// @Success 200 {object} dto.DecodeURLResp
+// @Failure 400 {object} dto.EchoHttpErrorResp
+// @Failure 500 {object} dto.EchoHttpErrorResp
+// @Router /url-shortener/decode [post]
 func (h *HTTP) decodeUrlHandler(c echo.Context) error {
 	r := DecodeURLInput{}
 	if err := c.Bind(&r); err != nil {

@@ -1,5 +1,10 @@
 basePath: /
 definitions:
+  dto.DecodeURLResp:
+    properties:
+      url:
+        type: string
+    type: object
   dto.EchoHttpErrorResp:
     properties:
       message: {}
@@ -8,6 +13,13 @@ definitions:
     properties:
       url:
         type: string
+    type: object
+  httpurlshortener.DecodeURLInput:
+    properties:
+      url:
+        type: string
+    required:
+    - url
     type: object
   httpurlshortener.EncodeURLInput:
     properties:
@@ -23,6 +35,36 @@ info:
   title: URL Shortener API
   version: "1.0"
 paths:
+  /url-shortener/decode:
+    post:
+      consumes:
+      - application/json
+      description: Decode a given URL to a shortened version.
+      parameters:
+      - description: URL Input to be decoded
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/httpurlshortener.DecodeURLInput'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.DecodeURLResp'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dto.EchoHttpErrorResp'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/dto.EchoHttpErrorResp'
+      summary: Decode URL
+      tags:
+      - url-shortener
   /url-shortener/encode:
     post:
       consumes:

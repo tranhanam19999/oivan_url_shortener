@@ -26,18 +26,10 @@ func NewHTTP(svc Service, usSvc USService, eg *echo.Group) {
 		usSvc: usSvc,
 	}
 
-	// swagger:route POST /url-shortener/decode url-shortener decodeUrl
-	//
-	// Decode a shortened URL to its original form.
-	//
-	// Responses:
-	//   201: redirect
-	//   400: badRequestResponse
-	//   404: notFoundResponse
-	//   500: internalServerErrorResponse
 	eg.GET("/:code", h.redirectUrlHandler)
 }
 
+// I didn't document swagger for this api tho
 func (h *HTTP) redirectUrlHandler(c echo.Context) error {
 	r := RedirectUrlInput{}
 	if err := c.Bind(&r); err != nil {

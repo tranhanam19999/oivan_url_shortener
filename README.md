@@ -36,6 +36,20 @@ Also I don't usually work with EC2, my main working experience is mainly with La
 
 ## 3. Solution
 
+For codebase, I've decided to built a simple yet effective clean architect. <br>
+The codebase will mainly consists of: <br>
+- main.go -> which is where the requests is received, there we can loading configs, declares routes, middlewares,... <br>
+- tools -> tools for the sourcecode, like configs, dbutil, utils
+- tests -> intergration tests. Noted that the unit tests will sit beside to it's module parent directory
+- docs -> swagger API documentation
+- .github -> for github action only
+- internal -> consists of what will be the internal logics, business layer of the code
+- interal/api -> responsible for handling declaring routes which receive from parent group declared in the main.go
+- internal/model -> responsible for declaring model that interact directly with the database
+- internal/dto > responsible for declaring structs, mapping between the http layer into the input of the service's layer and the response from the service into the http layer
+- internal/repository -> responsible for connecting to the database, insert, delete, etc manipulate with the database, the repository will not handle business logic
+- internal/service -> responsible for handling the business logic talks with the repository, and receive the input that was mapped in http layer and response to it <br>
+
 So to solve this exercise we must build 3 apis: 1 to encode, 1 to decode and the last one is for redirection <br>
 There is some approaches which comes in my mind and when I googling stuff:<br>
 
@@ -79,6 +93,7 @@ And won't be bottle-neck issue at the db <br>
 ## 4. Final thoughts
 
 If there is more time, I would build like to build migrations, currently it's just a simple auto-migrate to migrate to models into database <br>
-I would usually use gormigrate for this, or just write by myself mi-micking that library <br> 
+I would usually use gormigrate for this, or just write by myself mi-micking that library <br>
+And also adding metrics, more meaningful loggings <br>
 This assignment is a fun trip for me to experience building shortener service <br>
 If you truly read all of these, thank you for spending your time reading the document that I wrote <br>

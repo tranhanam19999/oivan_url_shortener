@@ -8,12 +8,13 @@ import (
 )
 
 type URLShortenerRepository interface {
-	// This will update to an existing US record
+	// UpdateMapping will update original and shortened to an existing US record by it's id
 	UpdateMapping(input UpdateMappingInput) error
 
 	// FindOne will find a URLShortener by it's input fields param
 	FindOne(input FindOneInput) (*model.URLShortener, error)
 
+	// GetNextID will insert a dummy record and returns it's id
 	GetNextID(ctx context.Context) (int64, error)
 }
 

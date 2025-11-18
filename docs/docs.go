@@ -15,6 +15,52 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
+        "/url-shortener/decode": {
+            "post": {
+                "description": "Decode a given URL to a shortened version.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "url-shortener"
+                ],
+                "summary": "Decode URL",
+                "parameters": [
+                    {
+                        "description": "URL Input to be decoded",
+                        "name": "input",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/httpurlshortener.DecodeURLInput"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/dto.DecodeURLResp"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/dto.EchoHttpErrorResp"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/dto.EchoHttpErrorResp"
+                        }
+                    }
+                }
+            }
+        },
         "/url-shortener/encode": {
             "post": {
                 "description": "Encode a given URL to a shortened version.",
@@ -63,6 +109,14 @@ const docTemplate = `{
         }
     },
     "definitions": {
+        "dto.DecodeURLResp": {
+            "type": "object",
+            "properties": {
+                "url": {
+                    "type": "string"
+                }
+            }
+        },
         "dto.EchoHttpErrorResp": {
             "type": "object",
             "properties": {
@@ -71,6 +125,17 @@ const docTemplate = `{
         },
         "dto.EncodeURLResp": {
             "type": "object",
+            "properties": {
+                "url": {
+                    "type": "string"
+                }
+            }
+        },
+        "httpurlshortener.DecodeURLInput": {
+            "type": "object",
+            "required": [
+                "url"
+            ],
             "properties": {
                 "url": {
                     "type": "string"
