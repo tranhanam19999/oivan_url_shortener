@@ -16,7 +16,13 @@ func Load() *Config {
 		log.Fatalf("failed to parse env: %v", err)
 	}
 
-	cfg.App.SBaseURL = utils.BuildShortenUrlFromConfig(utils.BuildUrlFromConfigInput{
+	cfg.App.BaseURL = utils.BuildBaseUrlFromConfig(utils.BuildBaseUrlFromConfigInput{
+		Host:  cfg.App.Host,
+		Port:  cfg.App.Port,
+		Stage: cfg.Stage,
+	})
+
+	cfg.App.SBaseURL = utils.BuildShortenUrlFromConfig(utils.BuildShortenUrlFromConfigInput{
 		Host:  cfg.App.Host,
 		Port:  cfg.App.Port,
 		Stage: cfg.Stage,
@@ -33,7 +39,13 @@ func LoadTest() *Config {
 		log.Fatalf("failed to parse env: %v", err)
 	}
 
-	cfg.App.SBaseURL = utils.BuildShortenUrlFromConfig(utils.BuildUrlFromConfigInput{
+	cfg.App.BaseURL = utils.BuildBaseUrlFromConfig(utils.BuildBaseUrlFromConfigInput{
+		Host:  cfg.App.Host,
+		Port:  cfg.App.Port,
+		Stage: cfg.Stage,
+	})
+
+	cfg.App.SBaseURL = utils.BuildShortenUrlFromConfig(utils.BuildShortenUrlFromConfigInput{
 		Host:  cfg.App.Host,
 		Port:  cfg.App.Port,
 		Stage: cfg.Stage,

@@ -61,10 +61,18 @@ func BuildUrlFromRequest(r *http.Request) string {
 	return reqUrl
 }
 
-func BuildShortenUrlFromConfig(in BuildUrlFromConfigInput) string {
+func BuildShortenUrlFromConfig(in BuildShortenUrlFromConfigInput) string {
 	if in.Stage == "local" {
 		return fmt.Sprintf("%s:%s/r", in.Host, in.Port)
 	}
 
 	return fmt.Sprintf("%s/r", in.Host)
+}
+
+func BuildBaseUrlFromConfig(in BuildBaseUrlFromConfigInput) string {
+	if in.Stage == "local" {
+		return fmt.Sprintf("%s:%s", in.Host, in.Port)
+	}
+
+	return in.Host
 }

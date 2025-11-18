@@ -15,6 +15,8 @@ import (
 
 	"github.com/labstack/echo/v4"
 
+	echoSwagger "github.com/swaggo/echo-swagger"
+
 	_ "url-shortener/docs"
 
 	"github.com/labstack/echo/v4/middleware"
@@ -45,6 +47,7 @@ func main() {
 	// Init repos
 	repos := repository.NewRepository(db)
 	e := echo.New()
+	e.GET("/swagger/*", echoSwagger.WrapHandler)
 
 	// Logger
 	e.Use(middleware.Logger())
