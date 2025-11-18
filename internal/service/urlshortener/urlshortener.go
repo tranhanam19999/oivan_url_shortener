@@ -18,7 +18,9 @@ func (s *service) EncodeUrl(ctx context.Context, input dto.EncodeURLReq) (*dto.E
 	})
 
 	fmt.Println("err encoding ", err)
+	fmt.Println("really?? ", errors.Is(err, gorm.ErrRecordNotFound))
 	if err != nil && !errors.Is(err, gorm.ErrRecordNotFound) {
+		fmt.Println("huh?")
 		return nil, err
 	}
 
