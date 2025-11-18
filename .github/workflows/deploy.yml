@@ -2,7 +2,7 @@ name: Deploy to EC2
 
 on:
   push:
-    branches: [ "main", "fix/db-connection" ]
+    branches: [ "main" ]
 
 jobs:
   deploy:
@@ -38,7 +38,7 @@ jobs:
             cd repo
             git pull
 
-            git checkout fix/db-connection
+            git checkout main
             git reset --hard
             git pull
 
