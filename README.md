@@ -23,7 +23,8 @@ This document is intended for you to understand my aspect/view when approaching 
 <br>
 I was really happy for getting a chance to be a part of Oivan by doing assignment
 <br>
-Beware that this document is not written or generated in AI haha so I just want you to know that maybe I wasn't that bright but I am serious when doing this assignment.
+Beware that this document is not written or generated in AI haha so I just want you to know that maybe I wasn't that bright but I am serious when doing this assignment.<br>
+
 
 ## 2. Problem
 
@@ -77,6 +78,7 @@ And won't be bottle-neck issue at the db <br>
 
 ## 4. Final thoughts
 
-If you truly read all of these, thank you for spending your time reading the document that I wrote <br>
+If there is more time, I would build like to build migrations, currently it's just a simple auto-migrate to migrate to models into database <br>
+I would usually use gormigrate for this, or just write by myself mi-micking that library <br> 
 This assignment is a fun trip for me to experience building shortener service <br>
-I won't regret that if I'm not choosen simply because I already did my best and someone is better than me <br>
+If you truly read all of these, thank you for spending your time reading the document that I wrote <br>
