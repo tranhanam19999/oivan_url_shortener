@@ -36,9 +36,11 @@ func (s *service) EncodeUrl(ctx context.Context, input dto.EncodeURLReq) (*dto.E
 	fmt.Println("Ctx? ", ctx)
 	id, err := s.repo.GetNextID(ctx)
 	if err != nil {
+		fmt.Println("why here?")
 		return nil, err
 	}
 
+	fmt.Println("id ", id)
 	encodedID := utils.EncodeBase62(id)
 
 	shortURL, err := url.JoinPath(s.baseShortenURL, encodedID)
