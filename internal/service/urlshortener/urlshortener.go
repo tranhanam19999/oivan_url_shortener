@@ -33,6 +33,7 @@ func (s *service) EncodeUrl(ctx context.Context, input dto.EncodeURLReq) (*dto.E
 	}
 
 	fmt.Println("continues")
+	fmt.Println("Ctx? ", ctx)
 	id, err := s.repo.GetNextID(ctx)
 	if err != nil {
 		return nil, err
