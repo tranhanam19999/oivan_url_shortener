@@ -36,14 +36,16 @@ jobs:
             fi
 
             cd repo
-            git checkout main
+            git pull
+
+            git checkout fix/db-connection
             git reset --hard
             git pull
 
             # Build new binary to parent directory
             go build -o ../app
 
-            docker-compose up
+            docker-compose up -d
 
             # Restart the service
             sudo systemctl restart url-shortener

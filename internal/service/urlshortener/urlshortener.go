@@ -3,6 +3,7 @@ package urlshortener
 import (
 	"context"
 	"errors"
+	"fmt"
 	"net/url"
 	"url-shortener/internal/dto"
 	repository "url-shortener/internal/repository/urlshortener"
@@ -16,10 +17,9 @@ func (s *service) EncodeUrl(ctx context.Context, input dto.EncodeURLReq) (*dto.E
 		OriginalURL: input.URL,
 	})
 
-	if err != nil {
-		if err != gorm.ErrRecordNotFound {
-			return nil, err
-		}
+	fmt.Println("err encoding ", err)
+	if err != nil && !errors.Is(err, gorm.ErrRecordNotFound) {
+		return nil, err
 	}
 
 	if rec != nil {
