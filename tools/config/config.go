@@ -1,7 +1,6 @@
 package config
 
 import (
-	"fmt"
 	"log"
 	"url-shortener/tools/utils"
 
@@ -22,12 +21,6 @@ func Load() *Config {
 		Port:  cfg.App.Port,
 		Stage: cfg.Stage,
 	})
-
-	fmt.Println("cfg.App.Host ", cfg.App.Host)
-	fmt.Println("cfg.App.Host ", cfg.App.Port)
-	fmt.Println("cfg.App.Host ", cfg.Stage)
-
-	fmt.Println("cfg.App.SBaseURL ", cfg.App.SBaseURL)
 
 	return &cfg
 }

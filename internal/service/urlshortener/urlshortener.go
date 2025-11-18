@@ -16,34 +16,22 @@ func (s *service) EncodeUrl(ctx context.Context, input dto.EncodeURLReq) (*dto.E
 		OriginalURL: input.URL,
 	})
 
-	fmt.Println("err encoding ", err)
-	fmt.Println("really?? ", errors.Is(err, gorm.ErrRecordNotFound))
-	fmt.Println("condition ", err != nil && !errors.Is(err, gorm.ErrRecordNotFound))
 	if err != nil && !errors.Is(err, gorm.ErrRecordNotFound) {
-		fmt.Println("huh?")
 		return nil, err
 	}
 
-	fmt.Println("Rec ", rec)
 	if rec != nil {
 		return &dto.EncodeURLResp{
 			URL: rec.ShortURL,
 		}, nil
 	}
 
-	fmt.Println("continues")
-	fmt.Println("Ctx? ", ctx)
 	id, err := s.repo.GetNextID(ctx)
 	if err != nil {
-		fmt.Println("why here?")
 		return nil, err
 	}
 
-	fmt.Println("id ", id)
 	encodedID := utils.EncodeBase62(id)
-
-	fmt.Println("encodedID ", encodedID)
-	fmt.Println("baseShortenURL ", s.baseShortenURL)
 
 	// url.JoinPath won't work on ips
 	// shortURL, err := url.JoinPath(s.baseShortenURL, encodedID)
@@ -55,7 +43,6 @@ func (s *service) EncodeUrl(ctx context.Context, input dto.EncodeURLReq) (*dto.E
 		ShortenedURL: shortURL,
 	})
 	if err != nil {
-		fmt.Println("herre?? ", err)
 		return nil, err
 	}
 

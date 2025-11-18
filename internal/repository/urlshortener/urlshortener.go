@@ -2,7 +2,6 @@ package repository
 
 import (
 	"context"
-	"fmt"
 	"url-shortener/internal/model"
 
 	"gorm.io/gorm"
@@ -61,10 +60,7 @@ func (r *repo) FindOne(input FindOneInput) (*model.URLShortener, error) {
 func (r *repo) GetNextID(ctx context.Context) (int64, error) {
 	var id int64
 
-	fmt.Println("&id ", &id)
 	err := r.db.WithContext(ctx).Raw(`INSERT INTO url_shorteners (original_url) VALUES ('') RETURNING id`).Scan(&id).Error
-
-	fmt.Println("here lies the error ", err)
 
 	return id, err
 }
