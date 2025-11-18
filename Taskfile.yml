@@ -16,6 +16,7 @@ tasks:
     desc: Build docker images
     cmds:
       - docker compose build
+      - swag init
 
   docker:down:
     desc: Stop containers
@@ -34,3 +35,6 @@ tasks:
   # this command is used for generating test (MOCK) files for supporting writing test only
   gen-mocks:
     mockery
+
+  test:
+    go test ./...

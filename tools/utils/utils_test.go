@@ -65,9 +65,9 @@ func TestIsValidUrl(t *testing.T) {
 	}{
 		{"https://google.com", true},
 		{"http://example.com/path?query=1", true},
-		{"ftp://fileserver.com/file.txt", true},
-		{"google.com", false},    // no scheme
-		{"htp://bad.com", false}, // invalid scheme
+		{"ftp://fileserver.com/file.txt", false}, // We do not accept ftp protocol
+		{"google.com", false},                    // no scheme
+		{"htp://bad.com", false},                 // invalid scheme
 		{"", false},
 		{"://invalid.com", false},
 	}
