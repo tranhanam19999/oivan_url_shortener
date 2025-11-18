@@ -43,8 +43,12 @@ func (s *service) EncodeUrl(ctx context.Context, input dto.EncodeURLReq) (*dto.E
 	fmt.Println("id ", id)
 	encodedID := utils.EncodeBase62(id)
 
+	fmt.Println("encodedID ", encodedID)
+	fmt.Println("baseShortenURL ", s.baseShortenURL)
+
 	shortURL, err := url.JoinPath(s.baseShortenURL, encodedID)
 	if err != nil {
+		fmt.Println("here? ", err)
 		return nil, err
 	}
 
@@ -54,6 +58,7 @@ func (s *service) EncodeUrl(ctx context.Context, input dto.EncodeURLReq) (*dto.E
 		ShortenedURL: shortURL,
 	})
 	if err != nil {
+		fmt.Println("herre?? ", err)
 		return nil, err
 	}
 
