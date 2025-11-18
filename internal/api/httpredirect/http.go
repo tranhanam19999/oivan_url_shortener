@@ -2,7 +2,6 @@ package httpredirect
 
 import (
 	"context"
-	"fmt"
 	"net/http"
 	"url-shortener/internal/dto"
 	"url-shortener/tools/utils"
@@ -40,7 +39,6 @@ func NewHTTP(svc Service, usSvc USService, eg *echo.Group) {
 }
 
 func (h *HTTP) redirectUrlHandler(c echo.Context) error {
-	fmt.Println("hello?")
 	r := RedirectUrlInput{}
 	if err := c.Bind(&r); err != nil {
 		return echo.NewHTTPError(http.StatusBadRequest, "Invalid input")
@@ -51,7 +49,6 @@ func (h *HTTP) redirectUrlHandler(c echo.Context) error {
 		return echo.NewHTTPError(http.StatusBadRequest, "Invalid url")
 	}
 
-	fmt.Println("Req ", reqUrl)
 	resp, err := h.usSvc.DecodeUrl(c.Request().Context(), dto.DecodeURLReq{
 		URL: reqUrl,
 	})

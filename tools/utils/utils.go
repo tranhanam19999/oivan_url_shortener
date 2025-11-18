@@ -66,5 +66,5 @@ func BuildShortenUrlFromConfig(in BuildUrlFromConfigInput) string {
 		return fmt.Sprintf("%s:%s/r", in.Host, in.Port)
 	}
 
-	return in.Host
+	return fmt.Sprintf("%s/r", in.Host)
 }

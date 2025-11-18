@@ -59,6 +59,8 @@ func (r *repo) FindOne(input FindOneInput) (*model.URLShortener, error) {
 
 func (r *repo) GetNextID(ctx context.Context) (int64, error) {
 	var id int64
+
 	err := r.db.WithContext(ctx).Raw(`INSERT INTO url_shorteners (original_url) VALUES ('') RETURNING id`).Scan(&id).Error
+
 	return id, err
 }
