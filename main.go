@@ -49,6 +49,10 @@ func main() {
 	e := echo.New()
 	e.GET("/swagger/*", echoSwagger.WrapHandler)
 
+	e.Use(middleware.CORSWithConfig(middleware.CORSConfig{
+		AllowOrigins: cfg.App.AllowOrigins,
+	}))
+
 	// Logger
 	e.Use(middleware.Logger())
 	e.Use(middleware.Recover())
